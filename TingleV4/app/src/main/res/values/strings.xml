@@ -1,0 +1,13 @@
+<resources>
+    <string name="app_name">Tingle</string>
+    <string name="where">Where?</string>
+    <string name="what_thing">What thing?</string>
+    <string name="heading_create">Add new thing</string>
+    <string name="headline">Last thing added</string>
+    <string name="search_what">Where is that thing?</string>
+    <string name="search_button_text">Search</string>
+    <string name="search_hint">Where is that thing?</string>
+    <string name="search_not_found">Could not find item</string>
+    <string name="activity_list_button">List of all things</string>
+    <string name="title_activity_list">All Things</string>
+</resources>
