@@ -1,1 +1,2 @@
-changed ListActivity to ListFragment
+changed ListActivity to use a fragment in the same
+manner as was done to the TingleActivity. Chapter 7?
