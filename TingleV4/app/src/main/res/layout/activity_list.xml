@@ -3,14 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <fragment
-        android:name="mmad.sjurdur.tingle.ListFragment"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/activity_list_fragment_container"
-        tools:layout="@layout/fragment_list">
-    </fragment>
-
+    android:layout_height="match_parent"
+    android:id="@+id/activity_list_fragment_container"
+    tools:layout="@layout/fragment_list">
 </FrameLayout>

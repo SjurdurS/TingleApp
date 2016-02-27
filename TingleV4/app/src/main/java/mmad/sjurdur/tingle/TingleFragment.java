@@ -20,8 +20,9 @@ import java.util.List;
 
 public class TingleFragment extends Fragment {
 
-    //fake database
+    // Fake database
     private static ThingsDB mThingsDB;
+
     // GUI variables
     private Button mAddThingButton;
     private Button mSearchButton;
