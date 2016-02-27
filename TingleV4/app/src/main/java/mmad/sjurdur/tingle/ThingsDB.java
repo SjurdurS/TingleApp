@@ -39,6 +39,15 @@ public class ThingsDB {
         return mThingsDB.get(i);
     }
 
+    /**
+     * Remove a Thing from the database.
+     * @param location  Integer position of the thing in the list.
+     * @return returns the removed Thing.
+     */
+    public Thing remove(int location) {
+        return sThingsDB.getThingsDB().remove(location);
+    }
+
     // Fill database for testing purposes
     private ThingsDB() {
         mThingsDB = new ArrayList<Thing>();

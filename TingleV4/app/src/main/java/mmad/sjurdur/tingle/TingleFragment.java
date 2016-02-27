@@ -108,7 +108,6 @@ public class TingleFragment extends Fragment {
             FragmentManager manager = getActivity().getSupportFragmentManager();
 
             //collect fragment (layout)
-
             Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
 
             //Use the manager to begin transaction, and remove the fragment

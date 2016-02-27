@@ -9,15 +9,17 @@ import android.widget.Toast;
 
 public class TingleActivity extends FragmentActivity {
 
+    private Fragment activity_fragment;
+    private Fragment list_fragment;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tingle);
 
         FragmentManager fm = getSupportFragmentManager();
-        Fragment activity_fragment = fm.findFragmentById(R.id.activity_tingle_fragment_container);
-        Fragment list_fragment = fm.findFragmentById(R.id.activity_list_fragment_container);
 
+        activity_fragment = fm.findFragmentById(R.id.activity_tingle_fragment_container);
         if (activity_fragment == null) {
             activity_fragment = new TingleFragment();
             fm.beginTransaction()
@@ -26,6 +28,8 @@ public class TingleActivity extends FragmentActivity {
         }
 
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+
+            list_fragment = fm.findFragmentById(R.id.activity_list_fragment_container);
             if (list_fragment == null) {
                 list_fragment = new ListFragment();
                 fm.beginTransaction()
@@ -34,5 +38,12 @@ public class TingleActivity extends FragmentActivity {
             }
         }
     }
-
+//
+//    @Override
+//    public void onResume() {
+//        // After a pause OR at startup
+//        super.onResume();
+//
+//        list_fragment.();
+//    }
 }
