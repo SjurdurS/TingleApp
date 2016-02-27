@@ -38,12 +38,4 @@ public class TingleActivity extends FragmentActivity {
             }
         }
     }
-//
-//    @Override
-//    public void onResume() {
-//        // After a pause OR at startup
-//        super.onResume();
-//
-//        list_fragment.();
-//    }
 }
