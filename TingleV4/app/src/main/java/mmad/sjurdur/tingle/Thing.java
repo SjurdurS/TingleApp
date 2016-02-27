@@ -56,6 +56,6 @@ public class Thing {
             return true;
 
         Thing rhs = (Thing) obj;
-        return ((Thing) obj).getWhat().equals(rhs.mWhat);
+        return ((Thing) obj).getWhat().equalsIgnoreCase(rhs.mWhat);
     }
 }

@@ -27,10 +27,6 @@ public class ThingsDB {
         return mThingsDB;
     }
 
-    public void addThing(Thing thing) {
-        mThingsDB.add(thing);
-    }
-
     public int size() {
         return mThingsDB.size();
     }
@@ -42,10 +38,19 @@ public class ThingsDB {
     /**
      * Remove a Thing from the database.
      * @param location  Integer position of the thing in the list.
-     * @return returns the removed Thing.
+     * @return Returns the removed Thing.
      */
     public Thing remove(int location) {
         return sThingsDB.getThingsDB().remove(location);
+    }
+
+    /**
+     * Add an item to the database.
+     * @param thing Thing to add
+     */
+    public void addThing(Thing thing) {
+        mThingsDB.add(thing);
+        sort_database();
     }
 
     // Fill database for testing purposes

@@ -6,6 +6,10 @@ import android.widget.TextView;
 
 /**
  * Created by sjurdur on 27/02/16.
+ *
+ * Custom TextView class so that
+ * we can toggle the information inside
+ * an item in the list view.
  */
 class ToggledTextView extends TextView {
 

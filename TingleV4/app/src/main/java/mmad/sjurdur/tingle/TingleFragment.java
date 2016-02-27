@@ -103,7 +103,8 @@ public class TingleFragment extends Fragment {
     }
 
     private void resetListFragment() {
-        //Call the Fragmentmanager
+
+        //Call the FragmentManager
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
             FragmentManager manager = getActivity().getSupportFragmentManager();
 

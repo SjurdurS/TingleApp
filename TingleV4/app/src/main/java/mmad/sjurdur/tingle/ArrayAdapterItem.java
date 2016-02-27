@@ -49,7 +49,6 @@ public class ArrayAdapterItem extends ArrayAdapter<Thing> {
         // get the TextView and then set the text (item name) and tag (item ID) values
         ToggledTextView textViewItem = (ToggledTextView) convertView.findViewById(R.id.textViewItem);
         textViewItem.setText(thing.getWhat());
-        textViewItem.setTag(false);
 
         return convertView;
 
