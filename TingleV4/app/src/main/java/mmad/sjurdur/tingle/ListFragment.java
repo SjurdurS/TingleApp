@@ -72,7 +72,8 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Thing thing = mThingsDB.getThingsDB().get(position);
-                Toast.makeText(getActivity(), "You selected : " + thing, Toast.LENGTH_SHORT).show();
+                //Toast.makeText(getActivity(), "You selected : " + thing, Toast.LENGTH_SHORT).show();
+                // Maybe toggle what/where on click
             }
         });
 
