@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.TextView;
 
 // here's our beautiful adapter
 public class ArrayAdapterItem extends ArrayAdapter<Thing> {
@@ -48,9 +47,9 @@ public class ArrayAdapterItem extends ArrayAdapter<Thing> {
         Thing thing = mThingsDB.get(position);
 
         // get the TextView and then set the text (item name) and tag (item ID) values
-        TextView textViewItem = (TextView) convertView.findViewById(R.id.textViewItem);
+        ToggledTextView textViewItem = (ToggledTextView) convertView.findViewById(R.id.textViewItem);
         textViewItem.setText(thing.getWhat());
-        textViewItem.setTag(thing.getWhere());
+        textViewItem.setTag(false);
 
         return convertView;
 

@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class ListFragment extends Fragment {
@@ -41,8 +42,6 @@ public class ListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_list, container, false);
 
-        mThingsDB = ThingsDB.get();
-
         // our adapter instance
         adapter = new ArrayAdapterItem(getActivity(), R.layout.list_item, mThingsDB);
 
@@ -70,10 +69,18 @@ public class ListFragment extends Fragment {
 
         listViewItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            public void onItemClick(AdapterView<?> parent, View rowView, int position, long id) {
                 Thing thing = mThingsDB.getThingsDB().get(position);
-                //Toast.makeText(getActivity(), "You selected : " + thing, Toast.LENGTH_SHORT).show();
-                // Maybe toggle what/where on click
+
+                ToggledTextView textView = (ToggledTextView) rowView.findViewById(R.id.textViewItem);
+
+                // Toggle What / Where on click
+                if (textView.isToggled()) {
+                    textView.setText(thing.getWhat());
+                } else {
+                    textView.setText("Location: " + thing.getWhere());
+                }
+                textView.toggle();
             }
         });
 

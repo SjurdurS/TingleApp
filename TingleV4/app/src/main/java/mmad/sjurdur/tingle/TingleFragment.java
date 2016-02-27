@@ -144,7 +144,7 @@ public class TingleFragment extends Fragment {
     private void search_for_thing(String what) {
 
         for (Thing t : mThingsDB.getThingsDB()) {
-            if (t.getWhat() != null && t.getWhat().contains(what)) {
+            if (t.getWhat() != null && t.getWhat().toLowerCase().contains(what.toLowerCase())) {
                 display_toast(t.getWhere());
                 return;
             }
