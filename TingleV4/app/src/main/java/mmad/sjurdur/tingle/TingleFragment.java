@@ -2,8 +2,10 @@ package mmad.sjurdur.tingle;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +20,8 @@ import java.util.List;
 
 public class TingleFragment extends Fragment {
 
+    //fake database
+    private static ThingsDB mThingsDB;
     // GUI variables
     private Button mAddThingButton;
     private Button mSearchButton;
@@ -25,9 +29,6 @@ public class TingleFragment extends Fragment {
     private TextView mLastAdded;
     private TextView mNewWhat, mNewWhere;
     private TextView mSearchWhat;
-
-    //fake database
-    private static ThingsDB mThingsDB;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -68,6 +69,8 @@ public class TingleFragment extends Fragment {
                             )
                     );
 
+                    resetListFragment();
+
                     // Clear text fields
                     mNewWhat.setText("");
                     mNewWhere.setText("");
@@ -92,10 +95,34 @@ public class TingleFragment extends Fragment {
                 // Start List Activity
                 Intent listActivityIntent = new Intent(getActivity(), ListActivity.class);
                 startActivity(listActivityIntent);
-           }
+            }
         });
 
         return v;
+    }
+
+    private void resetListFragment() {
+        //Call the Fragmentmanager
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            FragmentManager manager = getActivity().getSupportFragmentManager();
+
+            //collect fragment (layout)
+
+            Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
+
+            //Use the manager to begin transaction, and remove the fragment
+            manager.beginTransaction()
+                    .remove(fragment_list)
+                    .commit();
+
+            //Create a new Fragment (myListFragment.java)
+            fragment_list = new ListFragment();
+
+            //Use the manager to begin transaction, and add the new(updated) fragment
+            manager.beginTransaction()
+                    .add(R.id.activity_list_fragment_container, fragment_list)
+                    .commit();
+        }
     }
 
     private void updateUI() {
@@ -116,8 +143,8 @@ public class TingleFragment extends Fragment {
 
     private void search_for_thing(String what) {
 
-        for(Thing t : mThingsDB.getThingsDB()){
-            if(t.getWhat() != null && t.getWhat().contains(what)) {
+        for (Thing t : mThingsDB.getThingsDB()) {
+            if (t.getWhat() != null && t.getWhat().contains(what)) {
                 display_toast(t.getWhere());
                 return;
             }

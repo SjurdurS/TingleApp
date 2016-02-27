@@ -1,2 +1,6 @@
 changed ListActivity to use a fragment in the same
 manner as was done to the TingleActivity. Chapter 7?
+
+
+added a listener for onOrientationChanged. This is to be able to tell
+when to show 1 fragment or 2.
