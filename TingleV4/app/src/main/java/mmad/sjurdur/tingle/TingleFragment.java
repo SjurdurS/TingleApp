@@ -6,6 +6,7 @@ import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -128,6 +129,7 @@ public class TingleFragment extends Fragment {
 
     private void updateUI() {
         int s = mThingsDB.size();
+        Log.d("test", "The size " + s);
         if (s > 0) {
             mLastAdded.setText(mThingsDB.get(s - 1).toString());
         }

@@ -9,6 +9,8 @@ import java.util.List;
 
 /**
  * Created by sjurdur on 22/02/16.
+ *
+ * Fake database to store things.
  */
 public class ThingsDB {
 
@@ -23,10 +25,18 @@ public class ThingsDB {
         return sThingsDB;
     }
 
+    /**
+     * Get the database.
+     * @return Returns the singleton thingDatabase.
+     */
     public List<Thing> getThingsDB() {
         return mThingsDB;
     }
 
+    /**
+     * Get the size of the database
+     * @return Returns the size of the database.
+     */
     public int size() {
         return mThingsDB.size();
     }
@@ -50,10 +60,12 @@ public class ThingsDB {
      */
     public void addThing(Thing thing) {
         mThingsDB.add(thing);
-        sort_database();
+        //sort_database();
     }
 
-    // Fill database for testing purposes
+    /**
+     * Fill database for testing purposes
+     */
     private ThingsDB() {
         mThingsDB = new ArrayList<Thing>();
         mThingsDB.add(new Thing("Android Phone", "Desk"));
@@ -62,16 +74,21 @@ public class ThingsDB {
         mThingsDB.add(new Thing("Raspberry Pi", "Black Box"));
         mThingsDB.add(new Thing("TV Tuner", "Next to the TV"));
 
-        sort_database();
+        //sort_database();
     }
 
-    // Helper function to sort the fake database
-    private void sort_database() {
-        Collections.sort(mThingsDB, new Comparator<Thing>() {
-            @Override
-            public int compare(Thing lhs, Thing rhs) {
-                return lhs.getWhat().compareToIgnoreCase(rhs.getWhat());
-            }
-        });
-    }
+    /**
+     *   !! Removed because Last Thing Added will !!
+     *   !! not work when sorting the database    !!
+     *
+     *   Helper function to sort the fake databasw
+     */
+//    private void sort_database() {
+//        Collections.sort(mThingsDB, new Comparator<Thing>() {
+//            @Override
+//            public int compare(Thing lhs, Thing rhs) {
+//                return lhs.getWhat().compareToIgnoreCase(rhs.getWhat());
+//            }
+//        });
+//    }
 }

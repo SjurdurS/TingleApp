@@ -6,7 +6,7 @@ import java.util.Objects;
 
 /**
  * Created by sjurdur on 04/02/16.
- * <p/>
+ *
  * Class representing a single thing.
  */
 public class Thing {
