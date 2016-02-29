@@ -34,11 +34,53 @@ Changing the orientation to landscape then the two views are show side-by-side. 
 	\label{fig:landscape-main-view}
 \end{figure}
 
+\section{Design}
+
+
+\section{Extensions }
 
 
 \section{Testing}
+The testing of the App has been separated into two four different parts. One for each view and one for each orientation of the device. 
+
+\begin{figure}[H]
+	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
+	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
+		\hline
+		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
+		% -- test 1
+		A & Running the App opens up the Tingle view & The Tingle view is shown & The Tingle view is shown  \\ \hline
+		% -- test 2
+		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
+		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
+		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
+	\end{tabular}
+	
+	\caption{Test cases of the Tingle view in Portrait mode.}
+	\label{tab:test-cases-tingle-portrait}
+\end{figure}
+
+\begin{figure}[H]
+	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
+	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
+		\hline
+		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
+		% -- test 1
+		A & Running the App opens up the Tingle view & The Tingle view is shown & The Tingle view is shown  \\ \hline
+		% -- test 2
+		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
+		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
+		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
+		E & & & \\ \hline
+	\end{tabular}
+	
+	\caption{Test cases of the Tingle view in Landscape mode.}
+	\label{tab:test-cases-tingle-landscape}
+\end{figure}
+
 
 \section{Issues}
+
 
 Code duplication using the Activities.
 
