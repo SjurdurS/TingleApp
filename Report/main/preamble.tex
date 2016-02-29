@@ -2,14 +2,13 @@
 
 % Aesthetics
 \chapterstyle{hangnum}
-\renewcommand\contentsname{Table of Contents}
 
 \setlrmarginsandblock{3cm}{2.5cm}{*}
 \setulmarginsandblock{2.0cm}{2.0cm}{*}
 \checkandfixthelayout
 
 % Set language
-\usepackage[danish]{babel}
+\usepackage[british]{babel}
 
 % Packages
 \usepackage{xcolor}
@@ -21,17 +20,7 @@
 \usepackage[justification=centering]{caption}% or e.g. [format=hang]
 \usepackage{subfig}
 \usepackage{wrapfig}
-\usepackage{tocbibind}
-\usepackage{courier}
-\usepackage{fixltx2e}
-\usepackage{xcolor}
-\usepackage{gensymb}
 \usepackage{float}
-\usepackage{amsmath}
-\usepackage{csquotes}
-\usepackage{environ}
-\usepackage[square,numbers]{natbib}
-\usepackage{hyperref}
 
 
 \newcounter{quote}
@@ -40,25 +29,6 @@
   \hbox{}\nobreak\hfil{\fontfamily{pcr}\selectfont \small(#1)}%
   \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
 
-
-\NewEnviron{myquote}[1]{\vspace{1ex}\par
-\refstepcounter{quote}%
-\parbox{\dimexpr \textwidth-2cm}%
-{\BODY\newline
- \signed{#1}}%
-\hfill\llap{(\thequote)}\vspace{3ex}\par}
-
-\NewEnviron{myMultiquote}[1]{\vspace{1ex}\par
-\refstepcounter{quote}%
-\parbox{\dimexpr \textwidth-2cm}%
-{\BODY
- \signed{#1}}%
-\hfill\llap{(\thequote)}\vspace{1ex}\par}
-
-
-\newcommand{\citat}[1]{%
-   \hyperref[#1]{[c.\ref*{#1}]}
-}
 
 
 \newsavebox\mybox
