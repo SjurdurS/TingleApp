@@ -41,7 +41,7 @@ Changing the orientation to landscape then the two views are show side-by-side. 
 
 
 \section{Testing}
-The testing of the App has been separated into two four different parts. One for each view and one for each orientation of the device. 
+The testing of the Tingle App has been separated into four different parts using only black-box testing. One for each view and one for each orientation of the device. As can been seen in the tables below the cases are similar for Portrait mode and Landscape mode. This redundant testing is done to make sure there are no unforeseen bugs when changing the orientation.
 
 \begin{figure}[H]
 	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
@@ -49,11 +49,13 @@ The testing of the App has been separated into two four different parts. One for
 		\hline
 		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
 		% -- test 1
-		A & Running the App opens up the Tingle view & The Tingle view is shown & The Tingle view is shown  \\ \hline
+		A & Running the App & The Tingle view is shown & The Tingle view is shown  \\ \hline
 		% -- test 2
-		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
+		B &	Clicking the \texttt{List of All Things} button opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
 		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
 		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
+		E & Clicking \texttt{List of All Things} opens up a the List view. 
+     Clicking the android back button navigates back to the Tingle view & User is successfully navigated back to the Tingle view. & User is successfully navigated back to the Tingle view.  \\ \hline
 	\end{tabular}
 	
 	\caption{Test cases of the Tingle view in Portrait mode.}
@@ -66,23 +68,57 @@ The testing of the App has been separated into two four different parts. One for
 		\hline
 		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
 		% -- test 1
-		A & Running the App opens up the Tingle view & The Tingle view is shown & The Tingle view is shown  \\ \hline
+		A & Running the App & Both the Tingle view and List view are shown side-by-side. & Both the Tingle view and List view are shown side-by-side.  \\ \hline
 		% -- test 2
 		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
 		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
 		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
-		E & & & \\ \hline
+		E & Changes in Layout compared to Portrait mode & The button \texttt{Lost of All Things} is not present. & The button \texttt{Lost of All Things} is not present. \\ \hline
 	\end{tabular}
 	
 	\caption{Test cases of the Tingle view in Landscape mode.}
 	\label{tab:test-cases-tingle-landscape}
 \end{figure}
 
+\begin{figure}[H]
+	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
+	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
+		\hline
+		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
+		% -- test 1
+		A &	It is possible to click an item in the list & Toggles Name / Location of the item.  & Toggles Name / Location of the item. \\ \hline
+		B & It is possible to Long click an item in the list. & A dialog is displayed asking if the user wants to delete the clicked item. & A dialog is displayed asking if the user wants to delete the clicked item. \\ \hline
+		C & When deleting an item the user can decline the request by pressing \texttt{No}. & The item is not deleted. & The item is not deleted. \\ \hline
+		D & When deleting an item the user can accept the request by pressing \texttt{Yes}. & The item is deleted from the list. & The item is deleted from the list. \\ \hline
+		E & It is possible to delete all items in the list. & All items are deleted. & All items are deleted. \\ \hline
+		F & If there are many items in the database and not all items fit on the screen the user
+		can scroll the list. & The list is scrollable. & The list is scrollable. \\ \hline
+	\end{tabular}
+	
+	\caption{Test cases of the List view in Portrait mode.}
+	\label{tab:test-cases-list-portrait}
+\end{figure}
+
+\begin{figure}[H]
+	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
+	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
+		\hline
+		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
+		% -- test 1
+		A &	It is possible to click an item in the list & Toggles Name / Location of the item.  & Toggles Name / Location of the item. \\ \hline
+		B & It is possible to Long click an item in the list. & A dialog is displayed asking if the user wants to delete the clicked item. & A dialog is displayed asking if the user wants to delete the clicked item. \\ \hline
+		C & When deleting an item the user can decline the request by pressing \texttt{No}. & The item is not deleted. & The item is not deleted. \\ \hline
+		D & When deleting an item the user can accept the request by pressing \texttt{Yes}. & The item is deleted from the list. & The item is deleted from the list. \\ \hline
+		E & It is possible to delete all items in the list. & All items are deleted. & All items are deleted. \\ \hline
+		F & If there are many items in the database and not all items fit on the screen the user can scroll the list. & The list is scrollable. & The list is scrollable. \\ \hline
+	\end{tabular}
+	
+	\caption{Test cases of the List view in Landscape mode.}
+	\label{tab:test-cases-list-landscape}
+\end{figure}
 
 \section{Issues}
 
+As documented in the Test Cases no runtime issues have been found. This is not to say that there are none but the main usage of the application has been proved to work as expected.
 
-Code duplication using the Activities.
-
-I could make a common file with the side-by-side fragment layout and programatically test
-if we are in landscape orientation.
+The structure of the code on the other hand might not be optimal. There is redundancy with the landscape layout classes for both \texttt{TingleActivity.java} and \texttt{ListActivity.java} as well as the landscape files \texttt{activity\_list.xml} and \texttt{activity\_tingle.xml}. In the current setup these classes and layout files are more or less the same. To rid of this duplication a common dual-mode (landscape mode) layout file could be created.
