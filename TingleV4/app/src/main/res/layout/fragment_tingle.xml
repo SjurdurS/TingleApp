@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:fillViewport="true">
 
 
     <LinearLayout
@@ -25,6 +26,11 @@
             android:id="@+id/last_thing"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+
+        <!-- thin horizontal line -->
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dp"/>
 
         <!-- Button to add new thing -->
         <Button
@@ -74,16 +80,13 @@
 
         </LinearLayout>
 
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="50dp">
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/search_what"/>
 
             <Button
                 android:id="@+id/search_button"
@@ -97,13 +100,26 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/search_hint"
                 />
+        </LinearLayout>
+
+        <!-- filler -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+        </FrameLayout>
+
+        <!-- bottom content -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
 
             <Button
                 android:id="@+id/activity_list_button"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/activity_list_button"/>
-
         </LinearLayout>
 
     </LinearLayout>
