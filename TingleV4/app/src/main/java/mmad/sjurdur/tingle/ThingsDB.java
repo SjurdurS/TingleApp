@@ -78,6 +78,22 @@ public class ThingsDB {
     }
 
     /**
+     * Search the database for an thing.
+     * @param what The name of the thing
+     * @return Returns the first match of Thing found in the database. If no matches
+     * are found null is returned.
+     */
+    public Thing search(String what) {
+        for (Thing t : mThingsDB) {
+            if (t.getWhat() != null && t.getWhat().toLowerCase().contains(what.toLowerCase())) {
+                return t;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      *   !! Removed because Last Thing Added will !!
      *   !! not work when sorting the database    !!
      *

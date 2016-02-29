@@ -1,19 +1,14 @@
 package mmad.sjurdur.tingle;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 public class ListFragment extends Fragment {
 
@@ -31,10 +26,10 @@ public class ListFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        updateAdapter();
+        updateListView();
     }
 
-    public void updateAdapter(){
+    public void updateListView(){
         adapter.notifyDataSetChanged();
     }
 
@@ -100,7 +95,7 @@ public class ListFragment extends Fragment {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
                     mThingsDB.remove(mPositionOfClickedThing);
-                    updateAdapter();
+                    updateListView();
                     break;
 
                 case DialogInterface.BUTTON_NEGATIVE:

@@ -105,22 +105,22 @@ public class TingleFragment extends Fragment {
 
     private void resetListFragment() {
 
-        //Call the FragmentManager
         if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Call the FragmentManager
             FragmentManager manager = getActivity().getSupportFragmentManager();
 
-            //collect fragment (layout)
+            // Collect fragment (layout)
             Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
 
-            //Use the manager to begin transaction, and remove the fragment
+            // Use the manager to begin transaction, and remove the fragment
             manager.beginTransaction()
                     .remove(fragment_list)
                     .commit();
 
-            //Create a new Fragment (myListFragment.java)
+            // Create a new Fragment (myListFragment.java)
             fragment_list = new ListFragment();
 
-            //Use the manager to begin transaction, and add the new(updated) fragment
+            // Use the manager to begin transaction, and add the new(updated) fragment
             manager.beginTransaction()
                     .add(R.id.activity_list_fragment_container, fragment_list)
                     .commit();
@@ -129,7 +129,6 @@ public class TingleFragment extends Fragment {
 
     private void updateUI() {
         int s = mThingsDB.size();
-        Log.d("test", "The size " + s);
         if (s > 0) {
             mLastAdded.setText(mThingsDB.get(s - 1).toString());
         }
@@ -146,13 +145,11 @@ public class TingleFragment extends Fragment {
 
     private void search_for_thing(String what) {
 
-        for (Thing t : mThingsDB.getThingsDB()) {
-            if (t.getWhat() != null && t.getWhat().toLowerCase().contains(what.toLowerCase())) {
-                display_toast(t.getWhere());
-                return;
-            }
+        Thing foundThing = mThingsDB.search(what);
+        if (foundThing != null) {
+            display_toast(foundThing.getWhat() + " is here:\n" + foundThing.getWhere());
+        } else {
+            display_toast(R.string.search_not_found);
         }
-
-        display_toast(R.string.search_not_found);
     }
 }
