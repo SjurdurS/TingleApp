@@ -43,6 +43,8 @@ currently running. In my design this causes some duplication in code since the l
 not to make a distinct layout for the list view in landscape mode which has resulted in the code being near duplicated between the two Activity classes.
 The fragments have no knowledge of each other in order to obtain a more loosely coupled design.
 The communication between fragments has been moved up to the parent Activity classes instead via interfaces.
+For the user to be able to toggle the name and location of an item I have implemented a custom TextView class
+called ToggledTextView. This class holds a single boolean member variable \texttt{isToggled} that is flipped each time the user clicks an item in the list to keep track which information is displayed (What vs Where).
 
 \section{Extensions }
 A search function has been implemented making it possible for the user to search for an item in 
