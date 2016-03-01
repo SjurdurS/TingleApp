@@ -59,7 +59,10 @@
             <EditText
                 android:id="@+id/what_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:nextFocusDown="@+id/where_text"
+                android:inputType="text"
+                android:maxLines="1"/>
 
         </LinearLayout>
 
@@ -76,7 +79,9 @@
             <EditText
                 android:id="@+id/where_text"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:inputType="textImeMultiLine"
+                android:imeOptions="actionDone"/>
 
         </LinearLayout>
 
@@ -99,6 +104,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:hint="@string/search_hint"
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionDone"
                 />
         </LinearLayout>
 

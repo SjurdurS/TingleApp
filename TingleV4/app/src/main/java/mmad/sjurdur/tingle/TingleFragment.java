@@ -1,12 +1,9 @@
 package mmad.sjurdur.tingle;
 
-import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +11,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
-
 public class TingleFragment extends Fragment {
+    ListFragment.UpdateListFragmentListener mCallback;
 
     // Fake database
     private static ThingsDB mThingsDB;
@@ -31,6 +24,22 @@ public class TingleFragment extends Fragment {
     private TextView mLastAdded;
     private TextView mNewWhat, mNewWhere;
     private TextView mSearchWhat;
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        if (context instanceof ListActivity || context instanceof TingleActivity) {
+            try {
+                mCallback = (ListFragment.UpdateListFragmentListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString()
+                        + " must implement UpdateListFragmentListener");
+            }
+        }
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -71,7 +80,7 @@ public class TingleFragment extends Fragment {
                             )
                     );
 
-                    resetListFragment();
+                    mCallback.onUpdateListFragment();
 
                     // Clear text fields
                     mNewWhat.setText("");
@@ -101,30 +110,6 @@ public class TingleFragment extends Fragment {
         });
 
         return v;
-    }
-
-    private void resetListFragment() {
-
-        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
-            // Call the FragmentManager
-            FragmentManager manager = getActivity().getSupportFragmentManager();
-
-            // Collect fragment (layout)
-            Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
-
-            // Use the manager to begin transaction, and remove the fragment
-            manager.beginTransaction()
-                    .remove(fragment_list)
-                    .commit();
-
-            // Create a new Fragment (myListFragment.java)
-            fragment_list = new ListFragment();
-
-            // Use the manager to begin transaction, and add the new(updated) fragment
-            manager.beginTransaction()
-                    .add(R.id.activity_list_fragment_container, fragment_list)
-                    .commit();
-        }
     }
 
     private void updateUI() {

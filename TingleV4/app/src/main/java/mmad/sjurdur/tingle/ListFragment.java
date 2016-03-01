@@ -1,5 +1,6 @@
 package mmad.sjurdur.tingle;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,8 +12,37 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 public class ListFragment extends Fragment {
+    UpdateListFragmentListener mCallback;
 
-    //fake database
+    /**
+     * The container Activity must implement this interface so the frag can deliver messages
+     *
+     * This is based on the Android tutorial on Fragment Communication:
+     * http://developer.android.com/training/basics/fragments/communicating.html
+     */
+    public interface UpdateListFragmentListener {
+
+        /** Called by a fragment when a list item is added or deleted */
+        void onUpdateListFragment();
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+
+        // This makes sure that the container activity has implemented
+        // the callback interface. If not, it throws an exception.
+        if (context instanceof ListActivity || context instanceof TingleActivity){
+            try {
+                mCallback = (UpdateListFragmentListener) context;
+            } catch (ClassCastException e) {
+                throw new ClassCastException(context.toString()
+                        + " must implement UpdateListFragmentListener");
+            }
+        }
+    }
+    
+    // fake database
     private static ThingsDB mThingsDB;
 
     private ArrayAdapterItem adapter;
@@ -53,8 +83,8 @@ public class ListFragment extends Fragment {
                 Thing thing = mThingsDB.get(position);
                 MyOnClickListener myOnClickListener = new MyOnClickListener(position);
                 builder.setMessage("Are you sure you want to delete the following? \n" +
-                                    "Thing:\t" + thing.getWhat().toString() + "\n" +
-                                    "location:\t" + thing.getWhere())
+                                    "Thing:\t\t\t" + thing.getWhat().toString() + "\n" +
+                                    "Location:\t" + thing.getWhere())
                         .setPositiveButton("Yes", myOnClickListener)
                         .setNegativeButton("No", myOnClickListener)
                         .show();

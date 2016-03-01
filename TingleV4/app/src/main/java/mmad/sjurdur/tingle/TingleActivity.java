@@ -5,9 +5,11 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
-import android.widget.Toast;
+import android.util.Log;
 
-public class TingleActivity extends FragmentActivity {
+public class TingleActivity extends FragmentActivity
+        implements ListFragment.UpdateListFragmentListener {
+
 
     private Fragment activity_fragment;
     private Fragment list_fragment;
@@ -36,6 +38,32 @@ public class TingleActivity extends FragmentActivity {
                         .add(R.id.activity_list_fragment_container, list_fragment)
                         .commit();
             }
+        }
+    }
+
+    @Override
+    public void onUpdateListFragment() {
+        Log.d("TingleActivity", "onUpdateListFragment called.");
+
+        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+            // Call the FragmentManager
+            FragmentManager manager = getSupportFragmentManager();
+
+            // Collect fragment (layout)
+            Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
+
+            // Use the manager to begin transaction, and remove the fragment
+            manager.beginTransaction()
+                    .remove(fragment_list)
+                    .commit();
+
+            // Create a new Fragment (ListFragment.java)
+            fragment_list = new ListFragment();
+
+            // Use the manager to begin transaction, and add the new(updated) fragment
+            manager.beginTransaction()
+                    .add(R.id.activity_list_fragment_container, fragment_list)
+                    .commit();
         }
     }
 }

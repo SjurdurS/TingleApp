@@ -13,18 +13,18 @@ import android.widget.TextView;
  */
 class ToggledTextView extends TextView {
 
-    private boolean toggled;
+    private boolean isToggled;
 
     public ToggledTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        toggled = false;
+        isToggled = false;
     }
 
     public boolean isToggled() {
-        return toggled;
+        return isToggled;
     }
 
     public void toggle() {
-        this.toggled = !toggled;
+        this.isToggled = !isToggled;
     }
 }

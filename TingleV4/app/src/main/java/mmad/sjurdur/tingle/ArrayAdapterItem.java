@@ -46,7 +46,7 @@ public class ArrayAdapterItem extends ArrayAdapter<Thing> {
         // object item based on the position
         Thing thing = mThingsDB.get(position);
 
-        // get the TextView and then set the text (item name) and tag (item ID) values
+        // get the ToggledTextView and then set the text (item name) and tag (item ID) values
         ToggledTextView textViewItem = (ToggledTextView) convertView.findViewById(R.id.textViewItem);
         textViewItem.setText(thing.getWhat());
 
