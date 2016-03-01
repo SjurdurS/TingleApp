@@ -25,7 +25,8 @@ When running the Tingle App the first view the user sees is shown in Figure \ref
 \end{figure}
 
 
-Changing the orientation to landscape then the two views are show side-by-side. The same functionality applies to this view as they do in portrait mode as described above. The only difference is the removal of the \texttt{List of all things} button since the list is already visible to the right.
+Changing the orientation of the device to landscape displays the two views, Tingle view and List view, side-by-side. The same functionality applies to the views in landscape mode as they do in portrait mode as described above. The only difference is the removal of the \texttt{List of All Things} button since the list is already visible to the right. This is a choice of design. One could also make it possible to open up the 
+list in landscape view showing more information about each item.
 
 \begin{figure}[H]
 	\centering
@@ -35,15 +36,13 @@ Changing the orientation to landscape then the two views are show side-by-side. 
 \end{figure}
 
 \section{Design}
-The main design follows the convention explained in chapters 7 and 8 in the book \emph{The Big Nerd Ranch Guide 2nd Edition} using fragments inside Activity classes.
-I have separated the main view (\texttt{Tingle}) and the list view (\texttt{List}) into two different activities 
-(\texttt{TingleActivity} and \texttt{ListActivity}). This causes some duplication in code since the layout is identical 
-but the underlying code depends on which view you currently are in when you turn the device 
-from portrait mode to landscape mode. I chose not to make a distinct layout for the list view in 
-landscape mode which has resulted in the code being near duplicated between the two Activity classes.
-I have tried to separate the fragments so that they do not directly interact with each other in 
-order to obtain a more loosely coupled design.
-This communication has been moved up to the parent Activity classes instead via interfaces.
+The main design follows the convention explained in chapters 7 and 8 in the book \emph{The Big Nerd Ranch Guide 2nd Edition} using fragments.
+I have separated the main view (\texttt{Tingle}) and the list view (\texttt{List}) into two different 
+activities, (\texttt{TingleActivity} and \texttt{ListActivity}) respectively. When the user changes the orientation of the device how the fragments are loaded depends on which activity is
+currently running. In my design this causes some duplication in code since the layout is identical. I chose 
+not to make a distinct layout for the list view in landscape mode which has resulted in the code being near duplicated between the two Activity classes.
+The fragments have no knowledge of each other in order to obtain a more loosely coupled design.
+The communication between fragments has been moved up to the parent Activity classes instead via interfaces.
 
 \section{Extensions }
 A search function has been implemented making it possible for the user to search for an item in 
@@ -54,14 +53,15 @@ A delete function has also been implemented making it possible to remove items f
 The testing of the Tingle App has been separated into four different parts using only black-box testing. One for each view and one for each orientation of the device. As can been seen in the tables below the cases are similar for Portrait mode and Landscape mode. This redundant testing is done to make sure there are no unforeseen bugs when changing the orientation.
 
 \begin{figure}[H]
+	\centering
 	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
 	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
 		\hline
 		{\textbf{ID} } & {\textbf{Test Case} } & {\textbf{Expected Output}} & {\textbf {Actual Output}} \\\hline\hline
 		% -- test 1
-		A & Running the App & The Tingle view is shown & The Tingle view is shown  \\ \hline
+		A & Running the App & The application starts and the Tingle view is shown & The application starts and the Tingle view is shown  \\ \hline
 		% -- test 2
-		B &	Clicking the \texttt{List of All Things} button opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
+		B &	Clicking the \texttt{List of All Things} button opens up the List view. & The List view is shown. & The List view is shown. \\ \hline
 		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
 		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
 		E & Clicking \texttt{List of All Things} opens up a the List view. 
@@ -73,6 +73,7 @@ The testing of the Tingle App has been separated into four different parts using
 \end{figure}
 
 \begin{figure}[H]
+	\centering
 	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
 	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
 		\hline
@@ -80,7 +81,7 @@ The testing of the Tingle App has been separated into four different parts using
 		% -- test 1
 		A & Running the App & Both the Tingle view and List view are shown side-by-side. & Both the Tingle view and List view are shown side-by-side.  \\ \hline
 		% -- test 2
-		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up a the List view. & The List view is shown. & The List view is shown. \\ \hline
+		B &	Clicking the \texttt{List of All Things} button in the Tingle view opens up the List view. & The List view is shown. & The List view is shown. \\ \hline
 		C & It is possible to add an item to the database. & An item is successfully added to the database. & An item is successfully added to the database. \\ \hline
 		D & It is possible to search for an item in the database. & A Toast is displayed showing the location of the found item. & A Toast is displayed showing the location of the found item. \\ \hline
 		E & Changes in Layout compared to Portrait mode & The button \texttt{Lost of All Things} is not present. & The button \texttt{Lost of All Things} is not present. \\ \hline
@@ -91,6 +92,7 @@ The testing of the Tingle App has been separated into four different parts using
 \end{figure}
 
 \begin{figure}[H]
+	\centering
 	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
 	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
 		\hline
@@ -100,7 +102,7 @@ The testing of the Tingle App has been separated into four different parts using
 		B & It is possible to Long click an item in the list. & A dialog is displayed asking if the user wants to delete the clicked item. & A dialog is displayed asking if the user wants to delete the clicked item. \\ \hline
 		C & When deleting an item the user can decline the request by pressing \texttt{No}. & The item is not deleted. & The item is not deleted. \\ \hline
 		D & When deleting an item the user can accept the request by pressing \texttt{Yes}. & The item is deleted from the list. & The item is deleted from the list. \\ \hline
-		E & It is possible to delete all items in the list. & All items are deleted. & All items are deleted. \\ \hline
+		E & It is possible to delete items one by one until the list is empty. & All items are deleted and the app does not crash. & All items are deleted and the app does not crash. \\ \hline
 		F & If there are many items in the database and not all items fit on the screen the user
 		can scroll the list. & The list is scrollable. & The list is scrollable. \\ \hline
 	\end{tabular}
@@ -110,6 +112,7 @@ The testing of the Tingle App has been separated into four different parts using
 \end{figure}
 
 \begin{figure}[H]
+	\centering
 	\renewcommand*{\arraystretch}{1.5} % Redefine padding size
 	\begin{tabular}{| c | p{3.5cm} | p{3.5cm} | p{3.5cm} |}
 		\hline
@@ -129,6 +132,6 @@ The testing of the Tingle App has been separated into four different parts using
 
 \section{Issues}
 
-As documented in the Test Cases no runtime issues have been found. This is not to say that there are none but the main usage of the application has been proved to work as expected.
+As documented in the Test Cases no runtime issues have been found. This is not to say that there are no bugs in the software but the main usage of the application has been proven to work as expected.
 
 The structure of the code on the other hand might not be optimal. There is redundancy with the landscape layout classes for both \texttt{TingleActivity.java} and \texttt{ListActivity.java} as well as the landscape files \texttt{activity\_list.xml} and \texttt{activity\_tingle.xml}. In the current setup these classes and layout files are more or less the same. To rid of this duplication a common dual-mode (landscape mode) layout file could be created.
