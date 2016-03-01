@@ -4,18 +4,18 @@
 	\minipage{0.45\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{Tingle-Portrait.png}
-		\caption{Portrait view of the main Tingle activity.}
+		\caption{The main view (Tingle Activity) in portrait mode.}
 		\label{fig:tingle-view-portrait}
 	\endminipage\hfill
 	\minipage{0.45\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{List-Portrait.png}
-		\caption{Portrait view of the main List activity.}
+		\caption{Portrait view of the List Activity.}
 		\label{fig:list-view-portrait}
 	\endminipage\hfill
 \end{figure}
 
-When running the Tingle App the first view the user sees is shown in Figure \ref{fig:tingle-view-portrait}. In this view the user can add new things and their whereabouts to the database, search for exists things and finally list all things in the database. Clicking the button \texttt{List of all things} will open up the List Activity shown in Figure \ref{fig:list-view-portrait}. The list view is a scrollable list showing all items in the database. Tapping an item in the list will toggle the \emph{What} (i.e the name of the item) and \emph{Where} (the location of the item). The user can also delete an item by Long pressing on an item. A popup dialog appears as seen in Figure \ref{fig:delete-verification-dialog}.
+When running the Tingle App the first view the user sees is shown in Figure \ref{fig:tingle-view-portrait}. In this view the user can add new things and their whereabouts to the database, search for exists things and finally list all things in the database. Clicking the button \texttt{List of All Things} will open up the List Activity shown in Figure \ref{fig:list-view-portrait}. The list view is a scrollable list showing all items in the database. Tapping an item in the list will toggle the \emph{What} (i.e the name of the item) and \emph{Where} (the location of the item). The user can also delete an item by Long pressing on an item. A popup dialog appears as seen in Figure \ref{fig:delete-verification-dialog}.
 
 \begin{figure}[H]
 	\centering
@@ -35,12 +35,20 @@ Changing the orientation to landscape then the two views are show side-by-side. 
 \end{figure}
 
 \section{Design}
-The main design follows the convention explained in the 
+The main design follows the convention explained in chapters 7 and 8 in the book \emph{The Big Nerd Ranch Guide 2nd Edition} using fragments inside Activity classes.
+I have separated the main view (\texttt{Tingle}) and the list view (\texttt{List}) into two different activities 
+(\texttt{TingleActivity} and \texttt{ListActivity}). This causes some duplication in code since the layout is identical 
+but the underlying code depends on which view you currently are in when you turn the device 
+from portrait mode to landscape mode. I chose not to make a distinct layout for the list view in 
+landscape mode which has resulted in the code being near duplicated between the two Activity classes.
+I have tried to separate the fragments so that they do not directly interact with each other in 
+order to obtain a more loosely coupled design.
+This communication has been moved up to the parent Activity classes instead via interfaces.
 
 \section{Extensions }
-A search function has been implemented making it possible for the user to search for an item in the database.
-The user can access this function in the Tingle view.
-A delete function has been implemented
+A search function has been implemented making it possible for the user to search for an item in 
+the database. The user can access this function in the Tingle view.
+A delete function has also been implemented making it possible to remove items from the database. To delete an item the user can long-press an item until a verification dialog appears.
 
 \section{Testing}
 The testing of the Tingle App has been separated into four different parts using only black-box testing. One for each view and one for each orientation of the device. As can been seen in the tables below the cases are similar for Portrait mode and Landscape mode. This redundant testing is done to make sure there are no unforeseen bugs when changing the orientation.
