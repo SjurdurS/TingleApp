@@ -9,7 +9,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
+import mmad.sjurdur.tingle.database.ThingsBaseHelper;
 import mmad.sjurdur.tingle.database.ThingsCursorWrapper;
 import mmad.sjurdur.tingle.database.ThingsDbSchema;
 import mmad.sjurdur.tingle.database.ThingsDbSchema.ThingsTable;
@@ -23,11 +25,21 @@ public class ThingsDB {
 
     private static ThingsDB sThingsDB;
 
+    private Context mContext;
+
     private SQLiteDatabase mDatabase;
 
-    public static ThingsDB get() {
+    /**
+     * Private constructor as part of the singleton pattern.
+     */
+    private ThingsDB(Context context) {
+        mContext = context.getApplicationContext();
+        mDatabase = new ThingsBaseHelper(mContext).getWritableDatabase();
+    }
+
+    public static ThingsDB get(Context context) {
         if (sThingsDB == null) {
-            sThingsDB = new ThingsDB();
+            sThingsDB = new ThingsDB(context);
         }
         return sThingsDB;
     }
@@ -64,17 +76,35 @@ public class ThingsDB {
         return getThings().size();
     }
 
-    public Thing get(int i) {
-        return mThingsDB.get(i);
+    public Thing getThing(UUID id) {
+        ThingsCursorWrapper cursor = queryThings(
+                ThingsTable.Cols.UUID + " = ?",
+                new String[]{id.toString()}
+        );
+
+        try {
+            if (cursor.getCount() == 0) {
+                return null;
+            }
+
+            cursor.moveToFirst();
+            return cursor.getThing();
+        } finally {
+            cursor.close();
+        }
     }
 
     /**
      * Remove a Thing from the database.
-     * @param location  Integer position of the thing in the list.
-     * @return Returns the removed Thing.
+     * @param thing The thing to remove from the database.
+     * @return Returns true if the thing was successfully removed.
      */
-    public Thing remove(int location) {
-        return sThingsDB.getThingsDB().remove(location);
+    public boolean remove(Thing thing) {
+        String uuidString = thing.getId().toString();
+
+        return mDatabase.delete(ThingsTable.NAME,
+                ThingsTable.Cols.UUID + " = ?",
+                new String[]{uuidString}) > 0;
     }
 
     /**
@@ -82,38 +112,61 @@ public class ThingsDB {
      * @param thing Thing to add
      */
     public void addThing(Thing thing) {
-        mThingsDB.add(thing);
-        //sort_database();
+        ContentValues values = getContentValues(thing);
+        mDatabase.insert(ThingsTable.NAME, null, values);
     }
 
     /**
-     * Fill database for testing purposes
+     * Update a thing in the databse.
+     * @param thing The thing to update.
      */
-    private ThingsDB() {
-        mThingsDB = new ArrayList<Thing>();
-        mThingsDB.add(new Thing("Android Phone", "Desk"));
-        mThingsDB.add(new Thing("Android USB Cable", "Top Drawer"));
-        mThingsDB.add(new Thing("Big Nerd book", "Table Top"));
-        mThingsDB.add(new Thing("Raspberry Pi", "Black Box"));
-        mThingsDB.add(new Thing("TV Tuner", "Next to the TV"));
+    public void updateThing(Thing thing) {
+        String uuidString = thing.getId().toString();
+        ContentValues values = getContentValues(thing);
 
-        //sort_database();
+        mDatabase.update(ThingsTable.NAME, values,
+                ThingsTable.Cols.UUID + " = ?",
+                new String[]{uuidString});
     }
 
+
+    public Thing getLastAddedThing(){
+        Cursor cursor = mDatabase.query(ThingsTable.NAME, null, null, null, null, null, null, null);
+        ThingsCursorWrapper cursorWrapped = new ThingsCursorWrapper(cursor);
+
+        try {
+            if (cursorWrapped.getCount() == 0) {
+                return null;
+            }
+
+            cursorWrapped.moveToLast();
+            return cursorWrapped.getThing();
+        } finally {
+            cursorWrapped.close();
+        }
+    }
+
+
     /**
-     * Search the database for an thing.
+     * Search the database for a thing.
      * @param what The name of the thing
      * @return Returns the first match of Thing found in the database. If no matches
      * are found null is returned.
      */
     public Thing search(String what) {
-        for (Thing t : mThingsDB) {
-            if (t.getWhat() != null && t.getWhat().toLowerCase().contains(what.toLowerCase())) {
-                return t;
-            }
-        }
 
-        return null;
+        ThingsCursorWrapper cursor = queryThings(ThingsTable.Cols.WHAT + " = ?",
+                new String[]{what});
+
+        try {
+            if (cursor.getCount() == 0)
+                return null;
+
+            cursor.moveToFirst();
+            return cursor.getThing();
+        } finally {
+            cursor.close();
+        }
     }
 
 

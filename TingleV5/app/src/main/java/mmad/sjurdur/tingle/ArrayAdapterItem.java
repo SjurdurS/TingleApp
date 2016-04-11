@@ -22,7 +22,7 @@ public class ArrayAdapterItem extends ArrayAdapter<Thing> {
 
     public ArrayAdapterItem(Context mContext, int layoutResourceId, ThingsDB thingsDB) {
 
-        super(mContext, layoutResourceId, thingsDB.getThingsDB());
+        super(mContext, layoutResourceId, thingsDB.getThings());
 
         this.layoutResourceId = layoutResourceId;
         this.mContext = mContext;
@@ -43,12 +43,13 @@ public class ArrayAdapterItem extends ArrayAdapter<Thing> {
             convertView = inflater.inflate(layoutResourceId, parent, false);
         }
 
-        // object item based on the position
-        Thing thing = mThingsDB.get(position);
-
-        // get the ToggledTextView and then set the text (item name) and tag (item ID) values
-        ToggledTextView textViewItem = (ToggledTextView) convertView.findViewById(R.id.textViewItem);
-        textViewItem.setText(thing.getWhat());
+        Thing clickedThing = (Thing) getItem(position);
+        Thing thing = mThingsDB.getThing(clickedThing.getId());
+        if (thing != null) {
+            // get the ToggledTextView and then set the text (item name) and tag (item ID) values
+            ToggledTextView textViewItem = (ToggledTextView) convertView.findViewById(R.id.textViewItem);
+            textViewItem.setText(thing.getWhat());
+        }
 
         return convertView;
 

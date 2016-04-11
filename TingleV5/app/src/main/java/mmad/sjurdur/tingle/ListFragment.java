@@ -5,11 +5,14 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import java.util.UUID;
 
 public class ListFragment extends Fragment {
     UpdateListFragmentListener mCallback;
@@ -42,7 +45,6 @@ public class ListFragment extends Fragment {
         }
     }
     
-    // fake database
     private static ThingsDB mThingsDB;
 
     private ArrayAdapterItem adapter;
@@ -50,7 +52,7 @@ public class ListFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mThingsDB = ThingsDB.get();
+        mThingsDB = ThingsDB.get(getActivity());
     }
 
     @Override
@@ -80,8 +82,8 @@ public class ListFragment extends Fragment {
         listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
                 //Get your item here with the position
-                Thing thing = mThingsDB.get(position);
-                MyOnClickListener myOnClickListener = new MyOnClickListener(position);
+                Thing thing = (Thing) av.getItemAtPosition(position);
+                MyOnClickListener myOnClickListener = new MyOnClickListener(thing);
                 builder.setMessage("Are you sure you want to delete the following? \n" +
                                     "Thing:\t\t\t" + thing.getWhat().toString() + "\n" +
                                     "Location:\t" + thing.getWhere())
@@ -95,7 +97,7 @@ public class ListFragment extends Fragment {
         listViewItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View rowView, int position, long id) {
-                Thing thing = mThingsDB.getThingsDB().get(position);
+                Thing thing = (Thing) parent.getItemAtPosition(position);
 
                 ToggledTextView textView = (ToggledTextView) rowView.findViewById(R.id.textViewItem);
 
@@ -114,17 +116,20 @@ public class ListFragment extends Fragment {
 
     private class MyOnClickListener implements DialogInterface.OnClickListener {
 
-        int mPositionOfClickedThing;
+        Thing mThing;
 
-        public MyOnClickListener(int positionOfClickedThing) {
-            this.mPositionOfClickedThing = positionOfClickedThing;
+        public MyOnClickListener(Thing thing) {
+            this.mThing = thing;
         }
 
         @Override
         public void onClick(DialogInterface dialog, int which) {
             switch (which) {
                 case DialogInterface.BUTTON_POSITIVE:
-                    mThingsDB.remove(mPositionOfClickedThing);
+                    boolean removed = mThingsDB.remove(mThing);
+                    if (removed);
+                        Log.d("MyOnClickListener", "thing deleted.");
+                    mCallback.onUpdateListFragment();
                     updateListView();
                     break;
 

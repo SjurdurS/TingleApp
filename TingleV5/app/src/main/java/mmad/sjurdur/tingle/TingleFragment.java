@@ -44,7 +44,7 @@ public class TingleFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mThingsDB = ThingsDB.get();
+        mThingsDB = ThingsDB.get(getActivity());
     }
 
     @Override
@@ -113,9 +113,9 @@ public class TingleFragment extends Fragment {
     }
 
     private void updateUI() {
-        int s = mThingsDB.size();
-        if (s > 0) {
-            mLastAdded.setText(mThingsDB.get(s - 1).toString());
+        Thing lastAddedThing = mThingsDB.getLastAddedThing();
+        if (lastAddedThing != null){
+            mLastAdded.setText(lastAddedThing.toString());
         }
     }
 
