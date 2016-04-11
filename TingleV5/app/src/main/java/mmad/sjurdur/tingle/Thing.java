@@ -3,6 +3,7 @@ package mmad.sjurdur.tingle;
 import java.io.Console;
 import java.util.Comparator;
 import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Created by sjurdur on 04/02/16.
@@ -10,10 +11,19 @@ import java.util.Objects;
  * Class representing a single thing.
  */
 public class Thing {
+    private UUID mId;
     private String mWhat  = null;
     private String mWhere = null;
 
     public Thing(String what, String where) {
+        // Generate unique identifier
+        mId = UUID.randomUUID();
+        mWhat = what;
+        mWhere = where;
+    }
+
+    public Thing(UUID id, String what, String where) {
+        mId = id;
         mWhat  = what;
         mWhere = where;
     }
@@ -21,6 +31,10 @@ public class Thing {
     @Override
     public String toString() {
         return oneLine("Item: ", "is here: ");
+    }
+
+    public UUID getId() {
+        return mId;
     }
 
     public String getWhat() {

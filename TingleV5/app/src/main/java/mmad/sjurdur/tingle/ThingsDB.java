@@ -1,11 +1,18 @@
 package mmad.sjurdur.tingle;
 
+import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import mmad.sjurdur.tingle.database.ThingsCursorWrapper;
+import mmad.sjurdur.tingle.database.ThingsDbSchema;
+import mmad.sjurdur.tingle.database.ThingsDbSchema.ThingsTable;
 
 /**
  * Created by sjurdur on 22/02/16.
@@ -15,8 +22,8 @@ import java.util.List;
 public class ThingsDB {
 
     private static ThingsDB sThingsDB;
-    // fake database
-    private List<Thing> mThingsDB;
+
+    private SQLiteDatabase mDatabase;
 
     public static ThingsDB get() {
         if (sThingsDB == null) {
@@ -26,19 +33,35 @@ public class ThingsDB {
     }
 
     /**
-     * Get the database.
-     * @return Returns the singleton thingDatabase.
+     * Get the contents of the databse.
+     * @return Returns all things in the database.
      */
-    public List<Thing> getThingsDB() {
-        return mThingsDB;
+    public List<Thing> getThings() {
+
+        List<Thing> things = new ArrayList<>();
+
+        ThingsCursorWrapper cursor = queryThings(null, null);
+
+        try {
+            cursor.moveToFirst();
+            while(!cursor.isAfterLast()) {
+                Thing thing = cursor.getThing();
+                things.add(thing);
+                cursor.moveToNext();
+            }
+        } finally {
+            cursor.close();
+        }
+
+        return things;
     }
 
     /**
-     * Get the size of the database
-     * @return Returns the size of the database.
+     * Get the number of things in the database
+     * @return Returns the number of things in the database.
      */
     public int size() {
-        return mThingsDB.size();
+        return getThings().size();
     }
 
     public Thing get(int i) {
@@ -92,6 +115,31 @@ public class ThingsDB {
 
         return null;
     }
+
+
+    private static ContentValues getContentValues(Thing thing) {
+        ContentValues values = new ContentValues();
+        values.put(ThingsTable.Cols.UUID, thing.getId().toString());
+        values.put(ThingsTable.Cols.WHAT, thing.getWhat());
+        values.put(ThingsTable.Cols.WHERE, thing.getWhere());
+
+        return values;
+    }
+
+    private ThingsCursorWrapper queryThings(String whereClause, String[] whereArgs) {
+        Cursor cursor = mDatabase.query(
+                ThingsTable.NAME,
+                null, // Columns - null selects all columns
+                whereClause,
+                whereArgs,
+                null, // groupBy
+                null, // having
+                null  // orderBy
+        );
+
+        return new ThingsCursorWrapper(cursor);
+    }
+
 
     /**
      *   !! Removed because Last Thing Added will !!
