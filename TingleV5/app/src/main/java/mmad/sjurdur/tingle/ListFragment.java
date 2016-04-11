@@ -129,7 +129,7 @@ public class ListFragment extends Fragment {
                     boolean removed = mThingsDB.remove(mThing);
                     if (removed);
                         Log.d("MyOnClickListener", "thing deleted.");
-                    mCallback.onUpdateListFragment();
+                    //mCallback.onUpdateListFragment();
                     updateListView();
                     break;
 

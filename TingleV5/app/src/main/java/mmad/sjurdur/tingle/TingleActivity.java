@@ -6,6 +6,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.widget.ListView;
 
 public class TingleActivity extends FragmentActivity
         implements ListFragment.UpdateListFragmentListener {
@@ -40,7 +41,6 @@ public class TingleActivity extends FragmentActivity
             }
         }
     }
-
     @Override
     public void onUpdateListFragment() {
         Log.d("TingleActivity", "onUpdateListFragment called.");
@@ -50,20 +50,36 @@ public class TingleActivity extends FragmentActivity
             FragmentManager manager = getSupportFragmentManager();
 
             // Collect fragment (layout)
-            Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
-
-            // Use the manager to begin transaction, and remove the fragment
-            manager.beginTransaction()
-                    .remove(fragment_list)
-                    .commit();
-
-            // Create a new Fragment (ListFragment.java)
-            fragment_list = new ListFragment();
-
-            // Use the manager to begin transaction, and add the new(updated) fragment
-            manager.beginTransaction()
-                    .add(R.id.activity_list_fragment_container, fragment_list)
-                    .commit();
+            ListFragment fragment_list = (ListFragment) manager.findFragmentById(R.id.activity_list_fragment_container);
+            fragment_list.updateListView();
         }
     }
+
+
+
+//    @Override
+//    public void onUpdateListFragment() {
+//        Log.d("TingleActivity", "onUpdateListFragment called.");
+//
+//        if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+//            // Call the FragmentManager
+//            FragmentManager manager = getSupportFragmentManager();
+//
+//            // Collect fragment (layout)
+//            Fragment fragment_list = manager.findFragmentById(R.id.activity_list_fragment_container);
+//
+//            // Use the manager to begin transaction, and remove the fragment
+//            manager.beginTransaction()
+//                    .remove(fragment_list)
+//                    .commit();
+//
+//            // Create a new Fragment (ListFragment.java)
+//            fragment_list = new ListFragment();
+//
+//            // Use the manager to begin transaction, and add the new(updated) fragment
+//            manager.beginTransaction()
+//                    .add(R.id.activity_list_fragment_container, fragment_list)
+//                    .commit();
+//        }
+//    }
 }

@@ -116,6 +116,9 @@ public class TingleFragment extends Fragment {
         Thing lastAddedThing = mThingsDB.getLastAddedThing();
         if (lastAddedThing != null){
             mLastAdded.setText(lastAddedThing.toString());
+        } else {
+            // Clear the last added string when no Things are in the database.
+            mLastAdded.setText("");
         }
     }
 
