@@ -66,6 +66,7 @@ public class ListFragment extends Fragment {
     }
 
     public void updateListView(){
+        mAdapter.setThings(mThingsDB.getThings());
         mAdapter.notifyDataSetChanged();
     }
 
@@ -84,12 +85,22 @@ public class ListFragment extends Fragment {
         mThingRecyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), mThingRecyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                ThingHolder holder = (ThingHolder) mThingRecyclerView.getChildViewHolder(view);
 
             }
 
             @Override
             public void onItemLongClick(View view, int position) {
-
+                //Get your item here with the position
+                ThingHolder holder = (ThingHolder) mThingRecyclerView.getChildViewHolder(view);
+                Thing thing = holder.mThing;
+                MyOnClickListener myOnClickListener = new MyOnClickListener(thing);
+                builder.setMessage("Are you sure you want to delete the following? \n" +
+                                    "Thing:\t\t\t" + thing.getWhat().toString() + "\n" +
+                                    "Location:\t" + thing.getWhere())
+                        .setPositiveButton("Yes", myOnClickListener)
+                        .setNegativeButton("No", myOnClickListener)
+                        .show();
             }
         }));
 
@@ -156,6 +167,7 @@ public class ListFragment extends Fragment {
     private class ThingHolder extends RecyclerView.ViewHolder {
 
         public TextView mWhatTextView;
+        public Thing mThing;
 
         public ThingHolder(View itemView) {
             super(itemView);
@@ -183,11 +195,21 @@ public class ListFragment extends Fragment {
         public void onBindViewHolder(ThingHolder holder, int position) {
             Thing thing = mThings.get(position);
             holder.mWhatTextView.setText(thing.getWhat());
+            holder.mThing = thing;
         }
 
         @Override
         public int getItemCount() {
             return mThings.size();
+        }
+
+        public List<Thing> getThings() {
+            return mThings;
+        }
+
+        public void setThings(List<Thing> things){
+            mThings.clear();
+            mThings.addAll(things);
         }
     }
 
