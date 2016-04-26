@@ -1,13 +1,13 @@
 \section{Layout}
 
 \begin{figure}[!htb]
-	\minipage{0.45\textwidth}
+	\minipage{0.48\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{Tingle-Portrait.jpg}
-		\caption{The main view (Tingle Activity) in portrait mode.}
+		\caption{Portrait view of the Tingle Activity.}
 		\label{fig:tingle-view-portrait}
 	\endminipage\hfill
-	\minipage{0.45\textwidth}
+	\minipage{0.48\textwidth}
 		\centering
 		\includegraphics[width=0.9\linewidth]{List-Portrait.jpg}
 		\caption{Portrait view of the List Activity.}
@@ -15,18 +15,19 @@
 	\endminipage\hfill
 \end{figure}
 
-When running the Tingle App the first view the user sees is shown in Figure \ref{fig:tingle-view-portrait}. Since Version 4 (Mandatory Assignment \#1) not much has changed in the layout. The real changes in this version are made under the hood. One main addition in the layout is the \emph{Scan Barcodes} button. If the user has a barcode scanner installed on their device they can scan a barcode for quick item name lookup. The app uses Outpan to look up product information based on the barcode of the item. If no barcode scanner is installed on the device the \emph{Scan Barcode} button is changed to \emph{Lookup Barcode}, see Figure \ref{fig:lookupButton}, and the user can manually type in a barcode to fetch relevant product information. If the product the user is searching for exists on Outpan's servers then the name of the
+When running the Tingle App the first view the user sees is shown in Figure \ref{fig:tingle-view-portrait}. Since Version 4 (Mandatory Assignment \#1) not much has changed in the layout. The real changes in this version have been made under the hood. One main addition in the layout is the \emph{Scan Barcodes} button. If the user has a barcode scanner installed on their device they can scan a barcode for quick item-name lookup. The app uses Outpan to look up product information based on the barcode of the item. If no barcode scanner is installed on the device the \emph{Scan Barcode} button is changed to \emph{Lookup Barcode}, see Figure \ref{fig:lookupButton}, and the user can manually type in a barcode to fetch relevant product information. If the product the user is searching for exists on Outpan's servers then the name of the
 product is added the \emph{What} field.
-In this view the user can add new things and their whereabouts to the database, search for exists things and finally list all things in the database. Clicking the button \texttt{List of All Things} will open up the List Activity shown in Figure \ref{fig:list-view-portrait}. The list view is a scrollable list showing all items in the database. Tapping an item in the list will toggle the \emph{What} (i.e the name of the item) and \emph{Where} (the location of the item). The user can also delete an item by Long pressing on an item.
+
+The rest of the features in this view are the same as in the previous version of the app. The user can add new things and their whereabouts to the database, search for exists things and finally list all things in the database. Clicking the button \texttt{List of All Things} will open up the List Activity shown in Figure \ref{fig:list-view-portrait}. The list view is a scrollable list showing all items in the database. Tapping an item in the list will toggle the \emph{What} (i.e the name of the item) and \emph{Where} (the location of the item). The user can also delete an item by Long pressing on an item.
 
 \begin{figure}[!htb]
-	\minipage{0.45\textwidth}
+	\minipage{0.48\textwidth}
 	\centering
 	\includegraphics[width=0.9\textwidth]{BarcodeLookupButton.png}
 	\caption{When no Barcode Scanner is found the user can still manually lookup product information.}
 	\label{fig:lookupButton}
 	\endminipage\hfill
-	\minipage{0.45\textwidth}
+	\minipage{0.48\textwidth}
 	\centering
 	\includegraphics[width=0.9\textwidth]{NoInternet.png}
 	\caption{If not internet connection is found the user is prompted with a Toast.}
@@ -35,7 +36,7 @@ In this view the user can add new things and their whereabouts to the database, 
 \end{figure}
 
 \pagebreak
-Changing the orientation of the device to landscape displays the two views, Tingle view and List view, side-by-side. The same functionality applies to the views in landscape mode as they do in portrait mode as described above. The only difference is the removal of the \texttt{List of All Things} button since the list is already visible to the right. This is a choice of design. One could also make it possible to open up the 
+Changing the orientation of the device to landscape displays the two views, \emph{Tingle view }and \emph{List view}, side-by-side. The same functionality applies to the views in landscape mode as they do in portrait mode as described above. The only difference is the removal of the \texttt{List of All Things} button since the list is already visible on the right side of the screen. This is a choice of design. One could also make it possible to open up the 
 list in landscape view showing more information about each item.
 
 \begin{figure}[H]
@@ -46,7 +47,7 @@ list in landscape view showing more information about each item.
 \end{figure}
 
 \section{Database}
-Version 4 of Tingle App used an ArrayList to store data. The main issue with this implementation was that the data was not persistent. If the user closed the app all data was lost. This version of Tingle App uses an SQLite database to store data. The convention of the implementation of the SQLite database follows very closely chapter 14 in the book \emph{The Big Nerd Ranch Guide 2nd Edition}. The data is now persistent even if the user closes the application.
+Version 4 of Tingle App used an ArrayList to store data. The main issue with this implementation was that the data was not persistent. If the user closed the app all data was lost. This version of Tingle App uses an SQLite database to store data. The convention of the implementation of the SQLite database follows very closely chapter 14 in the book \emph{The Big Nerd Ranch Guide 2nd Edition}. With the SQLite database in store the data is now persistent even if the user closes the application.
 
 \section{Search}
 The user can search for items in the database using the \emph{Search} function in the main Tingle view. The search uses a simple SQL Query using the \texttt{"LIKE = "} clause to find items whose names contain the search query. If one or more results are returned only the first one is displayed to the user.
@@ -56,7 +57,7 @@ The user can search for items in the database using the \emph{Search} function i
 To be able to better handle if many items, say thousands, exist in the Tingle Database we use RecyclerViews. In the previous version of Tingle App every single item in the database were placed in their own TextView. Using a RecyclerView we circumvent this issue. Instead of creating a unique TextView for each item the RecyclerView only uses as many views as it takes to cover the whole screen plus a few more. When a view goes of the screen the view is reused with another item.
 
 \section{Handling Missing Barcode Scanner}
-If the device the user is using does not have a barcode scanner app installed then the user can still manually lookup items using the given
+If the device does not have a barcode scanner app installed the user can still manually lookup items using the given
 barcode text field.
 
 \section{Extensions }
