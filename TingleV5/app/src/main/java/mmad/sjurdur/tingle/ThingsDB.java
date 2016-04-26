@@ -155,8 +155,8 @@ public class ThingsDB {
      */
     public Thing search(String what) {
 
-        ThingsCursorWrapper cursor = queryThings(ThingsTable.Cols.WHAT + " = ?",
-                new String[]{what});
+        ThingsCursorWrapper cursor = queryThings(ThingsTable.Cols.WHAT + " LIKE ?",
+                new String[]{"%"+what+"%"});
 
         try {
             if (cursor.getCount() == 0)

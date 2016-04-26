@@ -231,6 +231,12 @@ public class TingleFragment extends Fragment {
         }
     }
 
+
+    /**
+     * Created by sjurdur on 26/04/16.
+     * Based on the Outpan API Documentation
+     * https://www.outpan.com/developers.php
+     */
     private class FetchOutpanTask extends AsyncTask<String, Void, OutpanObject> {
         private static final String TAG     = "FetchOutpanTask";
         private static final String API_KEY = "0d08313ee758182a42785762e24cf8ff";
