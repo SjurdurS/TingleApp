@@ -1,5 +1,7 @@
 package mmad.sjurdur.tingle.Outpan;
 
+import android.util.Log;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -26,22 +28,23 @@ public class OutpanFetcher {
         HttpURLConnection connection = (HttpURLConnection) url.openConnection();
         connection.setReadTimeout(10000 /* milliseconds */);
         connection.setConnectTimeout(15000 /* milliseconds */);
-        connection.setRequestMethod("GET");
-        connection.setDoInput(true);
+        //connection.setRequestMethod("GET");
+        //connection.setDoInput(true);
         connection.connect();
 
-        InputStream is = null;
+        InputStream stream = null;
 
         try {
-            is = connection.getInputStream();
-
+            stream = connection.getInputStream();
+            Log.i("OutpanFecther", "ResponseCode: "+ connection.getResponseCode());
+            if(connection.getResponseCode() == HttpURLConnection.HTTP_BAD_REQUEST) {
+                throw new IOException(connection.getResponseMessage() + ": badrequest: " + urlSpec);
+            }
             if (connection.getResponseCode() != HttpURLConnection.HTTP_OK) {
                 throw new IOException(connection.getResponseMessage() + ": with " + urlSpec);
             }
 
-            BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
-
-            char[] buffer = new char[1024];
+            BufferedReader br = new BufferedReader(new InputStreamReader(stream));
 
             String jsonString = new String();
 
@@ -59,6 +62,11 @@ public class OutpanFetcher {
         } finally {
             if (connection != null) {
                 connection.disconnect();
+            }
+            // Makes sure that the InputStream is closed after the app is
+            // finished using it.
+            if (stream != null) {
+                stream.close();
             }
         }
     }

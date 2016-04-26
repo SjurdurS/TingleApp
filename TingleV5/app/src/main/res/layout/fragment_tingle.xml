@@ -93,6 +93,14 @@
             android:layout_height="wrap_content"
             android:text="@string/scan_barcode_text"/>
 
+        <EditText
+            android:id="@+id/barcodeText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:nextFocusDown="@+id/where_text"
+            android:inputType="text"
+            android:maxLines="1"/>
+
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

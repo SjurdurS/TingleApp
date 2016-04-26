@@ -16,7 +16,7 @@ import mmad.sjurdur.tingle.Outpan.OutpanFetcher;
  * Based on the Outpan API Documentation
  * https://www.outpan.com/developers.php
  */
-public class FetchOutpanTask extends AsyncTask<String, Void, OutpanObject>{
+public class FetchOutpanTask extends AsyncTask<String, Void, OutpanObject> {
     private static final String TAG     = "FetchOutpanTask";
     private static final String API_KEY = "0d08313ee758182a42785762e24cf8ff";
     private String API_URL              = "https://api.outpan.com/v2/products/%s?apikey=%s";
@@ -36,10 +36,11 @@ public class FetchOutpanTask extends AsyncTask<String, Void, OutpanObject>{
                 OutpanObject outpanObject = new OutpanObject(json);
                 return outpanObject;
             }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
+        } catch (MalformedURLException me) {
+            me.printStackTrace();
         } catch (IOException ioe) {
             Log.e(TAG, "Failed to fetch URL: " + ioe);
+            ioe.printStackTrace();
         } catch (JSONException e) {
             e.printStackTrace();
         }

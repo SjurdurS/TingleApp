@@ -1,11 +1,6 @@
 package mmad.sjurdur.tingle.Outpan;
 
-/**
- * Created by sjurdur on 26/04/16.
- *
- * This class is mainly based on this implementation.
- * https://github.com/johncipponeri/outpan-api-java/blob/master/src/io/github/johncipponeri/outpanapi/OutpanObject.java
- */
+
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -18,7 +13,15 @@ import java.util.Iterator;
 import java.util.List;
 
 
-
+/**
+ * Created by sjurdur on 26/04/16.
+ * <p/>
+ * This class is mainly based on this implementation.
+ * https://github.com/johncipponeri/outpan-api-java/blob/master/src/io/github/johncipponeri/outpanapi/OutpanObject.java
+ * <p/>
+ * This class maps a json response from www.outpan.com to
+ * an object for easy accessing of attributes.
+ */
 public class OutpanObject {
 
     public String
@@ -55,8 +58,18 @@ public class OutpanObject {
 
         if (!json.isNull("attributes")) {
 
-            Log.i("OutpanObject",json.get("attributes").toString());
-            try {
+            // This will give us whatever's at "attributes", regardless of its type.
+            Object attr = json.get("attributes");
+
+            // `instanceof` tells us whether the object can be cast to a specific type
+            if (attr instanceof JSONArray) {
+                Log.i("OutpanObject", "It's a json array. Do nothing.");
+            } else {
+                Log.i("OutpanObject", "It's a json object.");
+                // if you know it's either an array or an object, then it's an object
+                JSONObject urlObject = (JSONObject) attr;
+                // do objecty stuff with urlObject
+
                 JSONObject attrObject = json.getJSONObject("attributes");
 
                 List<String> keyList = new ArrayList<>();
@@ -69,8 +82,6 @@ public class OutpanObject {
 
                 for (int a = 0; a < attrs.length; a++)
                     this.attributes.put(attrs[a], attrObject.getString(attrs[a]));
-            } catch (Exception e){
-                Log.e("OutpanObject", "Error: " + e);
             }
 
         }
