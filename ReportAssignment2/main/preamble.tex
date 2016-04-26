@@ -1,0 +1,42 @@
+\documentclass[a4paper,1pt,oneside,openany]{memoir}
+
+% Aesthetics
+\chapterstyle{hangnum}
+
+\setlrmarginsandblock{3cm}{2.5cm}{*}
+\setulmarginsandblock{2.0cm}{2.0cm}{*}
+\checkandfixthelayout
+
+% Set language
+\usepackage[british]{babel}
+
+% Packages
+\usepackage{xcolor}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc} % unicode support
+\usepackage{graphicx}
+\graphicspath{ {figures/} }
+
+\usepackage[justification=centering]{caption}% or e.g. [format=hang]
+\usepackage{subfig}
+\usepackage{wrapfig}
+\usepackage{float}
+
+
+\newcounter{quote}
+
+\def\signed #1{{\leavevmode\unskip\nobreak\hfil\penalty50\hskip2em
+  \hbox{}\nobreak\hfil{\fontfamily{pcr}\selectfont \small(#1)}%
+  \parfillskip=0pt \finalhyphendemerits=0 \endgraf}}
+
+
+
+\newsavebox\mybox
+\newenvironment{aquote}[1]
+  {\savebox\mybox{#1}\begin{quote}}
+  {\signed{\usebox\mybox}\end{quote}}
+
+
+
+% Commands
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}

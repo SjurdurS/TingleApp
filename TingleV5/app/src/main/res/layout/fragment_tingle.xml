@@ -80,8 +80,9 @@
                 android:id="@+id/where_text"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textImeMultiLine"
-                android:imeOptions="actionDone"/>
+                android:inputType="text"
+                android:maxLines="1"
+                android:imeOptions="actionSend"/>
 
         </LinearLayout>
 
@@ -91,15 +92,16 @@
             android:id="@+id/scan_barcode_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/scan_barcode_text"/>
+            android:text="@string/scan_barcode_button_text"/>
 
         <EditText
             android:id="@+id/barcodeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:nextFocusDown="@+id/where_text"
             android:inputType="text"
-            android:maxLines="1"/>
+            android:hint="@string/barcode_placeholder"
+            android:maxLines="1"
+            android:imeOptions="actionSend"/>
 
         <FrameLayout
             android:layout_width="match_parent"
@@ -130,8 +132,8 @@
                 android:hint="@string/search_hint"
                 android:inputType="text"
                 android:maxLines="1"
-                android:imeOptions="actionDone"
-                />
+                android:imeOptions="actionSend"
+                android:textSize="14dp"/>
 
         </LinearLayout>
 

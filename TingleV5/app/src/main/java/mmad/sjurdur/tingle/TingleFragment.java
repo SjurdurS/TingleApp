@@ -10,9 +10,12 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,10 +23,10 @@ import android.widget.Toast;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 
-import mmad.sjurdur.tingle.Outpan.FetchOutpanTask;
 import mmad.sjurdur.tingle.Outpan.NetworkHelper;
 import mmad.sjurdur.tingle.Outpan.OutpanFetcher;
 import mmad.sjurdur.tingle.Outpan.OutpanObject;
@@ -43,6 +46,8 @@ public class TingleFragment extends Fragment {
     private TextView mNewWhat, mNewWhere;
     private TextView mSearchWhat;
     private TextView mBarcodeText;
+
+    private Boolean mUseBarcodeScanner = false;
 
     @Override
     public void onAttach(Context context) {
@@ -90,6 +95,51 @@ public class TingleFragment extends Fragment {
         mScanBarcodeButton = (Button) v.findViewById(R.id.scan_barcode_button);
         mBarcodeText = (TextView) v.findViewById(R.id.barcodeText);
 
+
+        // Add OnEditorActionListeners to handle when the user is done typing.
+        mNewWhere.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    // Instead of reimplemented the add thing function just click the button.
+                    mAddThingButton.performClick();
+                    HideKeyboard(mNewWhere);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+        mBarcodeText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+
+                    LookupBarcode();
+                    HideKeyboard(mBarcodeText);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+        mSearchWhat.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                boolean handled = false;
+                if (actionId == EditorInfo.IME_ACTION_SEND) {
+                    // Instead of reimplemented the add thing function just click the button.
+                    mSearchButton.performClick();
+                    HideKeyboard(mSearchButton);
+                    handled = true;
+                }
+                return handled;
+            }
+        });
+
+
         // view products click event
         mAddThingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,37 +172,31 @@ public class TingleFragment extends Fragment {
             }
         });
 
-
-//        mScanBarcodeButton.setOnClickListener(new View.OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                if (NetworkHelper.isOnline(getContext())) {
-//                    //String barcode = "9780134171456";
-//                    //String barcode = "0078915030900";
-//                    String barcode = mBarcodeText.getText().toString();
-//                    new FetchOutpanTask().execute(barcode);
-//                } else {
-//                    Log.i("ScanBarcodeButton", "No internet connection.");
-//                }
-//
-//            }
-//        });
         try {
             final Intent scanIntent = new Intent("com.google.zxing.client.android.SCAN");
             mScanBarcodeButton.setOnClickListener(new View.OnClickListener() {
 
                 public void onClick(View v) {
                     scanIntent.putExtra("SCAN_MODE", "PRODUCT_MODE");
-                    startActivityForResult(scanIntent, 0);
+                    if (mUseBarcodeScanner) {
+                        // Use the scanner
+                        startActivityForResult(scanIntent, 0);
+                    } else {
+                        LookupBarcode();
+                    }
                 }
 
             });
 
             PackageManager packageManager = getActivity().getPackageManager();
+            // If no barcode scanner is found on the app change the button to manual lookup.
             if (packageManager.resolveActivity(scanIntent,
                     PackageManager.MATCH_DEFAULT_ONLY) == null) {
-                mScanBarcodeButton.setEnabled(false);
+                mScanBarcodeButton.setText(R.string.lookup_barcode_button_text);
+                mUseBarcodeScanner = false;
+            } else {
+                mScanBarcodeButton.setText(R.string.scan_barcode_button_text);
+                mUseBarcodeScanner = true;
             }
 
         } catch (ActivityNotFoundException anfe) {
@@ -171,6 +215,21 @@ public class TingleFragment extends Fragment {
         });
 
         return v;
+    }
+
+    private void LookupBarcode(){
+        String barcode = mBarcodeText.getText().toString();
+
+        if (NetworkHelper.isOnline(getContext())) {
+            new FetchOutpanTask().execute(barcode);
+        } else {
+            display_toast("No internet connection.");
+        }
+    }
+
+    private void HideKeyboard(TextView textView) {
+        InputMethodManager in = (InputMethodManager) getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+        in.hideSoftInputFromWindow(textView.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
     }
 
     @Override
@@ -195,9 +254,7 @@ public class TingleFragment extends Fragment {
             } else if (resultCode == Activity.RESULT_CANCELED) {
 
                 // Handle cancel
-                Toast toast = Toast.makeText(getActivity(), "Scan was Cancelled!", Toast.LENGTH_SHORT);
-                toast.setGravity(Gravity.TOP, 25, 400);
-                toast.show();
+                display_toast("Scan was Cancelled!");
             }
         }
     }
@@ -241,6 +298,7 @@ public class TingleFragment extends Fragment {
         private static final String TAG     = "FetchOutpanTask";
         private static final String API_KEY = "0d08313ee758182a42785762e24cf8ff";
         private String API_URL              = "https://api.outpan.com/v2/products/%s?apikey=%s";
+        private String errorMessage = "";
 
         @Override
         protected OutpanObject doInBackground(String... params) {
@@ -258,11 +316,16 @@ public class TingleFragment extends Fragment {
                     return outpanObject;
                 }
             } catch (MalformedURLException me) {
+                errorMessage = "MalformedURL: " + me.getMessage();
                 me.printStackTrace();
+            } catch (FileNotFoundException fnfe) {
+                errorMessage = "Error: No item found:\n" + fnfe.getMessage();
+                fnfe.printStackTrace();
             } catch (IOException ioe) {
-                Log.e(TAG, "Failed to fetch URL: " + ioe);
+                errorMessage = "Error: Could not fetch url:\n" + ioe.getMessage();
                 ioe.printStackTrace();
             } catch (JSONException e) {
+                errorMessage = "JSONException: " + e.getMessage();
                 e.printStackTrace();
             }
 
@@ -271,6 +334,9 @@ public class TingleFragment extends Fragment {
 
         @Override
         protected void onPostExecute(OutpanObject outpan) {
+            if (!errorMessage.equals("")) {
+                display_toast(errorMessage);
+            }
             if (outpan != null) {
                 if (outpan.name != null && !outpan.name.equals("")) {
                     mNewWhat.setText(outpan.name);
@@ -278,9 +344,7 @@ public class TingleFragment extends Fragment {
                     mNewWhere.requestFocus();
                 } else {
                     // Handle if no name was found.
-                    Toast toast = Toast.makeText(getActivity(), "No name found for barcode: " +outpan.gtin, Toast.LENGTH_SHORT);
-                    toast.setGravity(Gravity.TOP, 25, 400);
-                    toast.show();
+                    display_toast("No name found for barcode: " +outpan.gtin);
                 }
             } else {
                 Log.e(TAG, "JSON is null.");

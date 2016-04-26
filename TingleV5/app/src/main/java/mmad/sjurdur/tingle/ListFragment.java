@@ -86,7 +86,14 @@ public class ListFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 ThingHolder holder = (ThingHolder) mThingRecyclerView.getChildViewHolder(view);
-
+                ToggledTextView textView = holder.mWhatTextView;
+                // Toggle What / Where on click
+                if (textView.isToggled()) {
+                    textView.setText(holder.mThing.getWhat());
+                } else {
+                    textView.setText("Location: " + holder.mThing.getWhere());
+                }
+                textView.toggle();
             }
 
             @Override
@@ -115,64 +122,15 @@ public class ListFragment extends Fragment {
         mThingRecyclerView.setAdapter(mAdapter);
     }
 
-//    @Override
-//    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-//        View v = inflater.inflate(R.layout.fragment_list, container, false);
-//
-//        // our adapter instance
-//        mAdapter = new ArrayAdapterItem(getActivity(), R.layout.list_item, mThingsDB);
-//
-//        // create a new ListView, set the mAdapter and item click listener
-//        ListView listViewItems = (ListView) v.findViewById(R.id.list_of_items);
-//        listViewItems.setAdapter(mAdapter);
-//
-//
-//        final AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
-//
-//        listViewItems.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-//            public boolean onItemLongClick(AdapterView<?> av, View v, int position, long id) {
-//                //Get your item here with the position
-//                Thing thing = (Thing) av.getItemAtPosition(position);
-//                MyOnClickListener myOnClickListener = new MyOnClickListener(thing);
-//                builder.setMessage("Are you sure you want to delete the following? \n" +
-//                                    "Thing:\t\t\t" + thing.getWhat().toString() + "\n" +
-//                                    "Location:\t" + thing.getWhere())
-//                        .setPositiveButton("Yes", myOnClickListener)
-//                        .setNegativeButton("No", myOnClickListener)
-//                        .show();
-//                return true;
-//            }
-//        });
-//
-//        listViewItems.setOnItemClickListener(new android.widget.AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View rowView, int position, long id) {
-//                Thing thing = (Thing) parent.getItemAtPosition(position);
-//
-//                ToggledTextView textView = (ToggledTextView) rowView.findViewById(R.id.textViewItem);
-//
-//                // Toggle What / Where on click
-//                if (textView.isToggled()) {
-//                    textView.setText(thing.getWhat());
-//                } else {
-//                    textView.setText("Location: " + thing.getWhere());
-//                }
-//                textView.toggle();
-//            }
-//        });
-//
-//        return v;
-//    }
-
     private class ThingHolder extends RecyclerView.ViewHolder {
 
-        public TextView mWhatTextView;
+        public ToggledTextView mWhatTextView;
         public Thing mThing;
 
         public ThingHolder(View itemView) {
             super(itemView);
 
-            mWhatTextView = (TextView) itemView;
+            mWhatTextView = (ToggledTextView) itemView;
         }
     }
 

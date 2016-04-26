@@ -8,7 +8,9 @@
     <string name="search_button_text">Search</string>
     <string name="search_hint">Where is that thing?</string>
     <string name="search_not_found">Could not find item</string>
-    <string name="scan_barcode_text">Scan Barcode</string>
+    <string name="scan_barcode_button_text">Scan Barcode</string>
+    <string name="lookup_barcode_button_text">Lookup Barcode</string>
+    <string name="barcode_placeholder">Barcode</string>
     <string name="activity_list_button">List of all things</string>
     <string name="title_activity_list">All Things</string>
 </resources>
