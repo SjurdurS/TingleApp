@@ -86,6 +86,22 @@
         </LinearLayout>
 
 
+        <!-- filler -->
+        <Button
+            android:id="@+id/scan_barcode_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/scan_barcode_text"/>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1">
+
+        </FrameLayout>
+
+        <!-- bottom content -->
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -108,16 +124,14 @@
                 android:maxLines="1"
                 android:imeOptions="actionDone"
                 />
+
         </LinearLayout>
 
-        <!-- filler -->
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
-        </FrameLayout>
+            android:layout_weight="1"/>
 
-        <!-- bottom content -->
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,9 +1,12 @@
 package mmad.sjurdur.tingle;
 
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,6 +24,7 @@ public class TingleFragment extends Fragment {
     private Button mAddThingButton;
     private Button mSearchButton;
     private Button mAllThingsButton;
+    private Button mScanBarcodeButton;
     private TextView mLastAdded;
     private TextView mNewWhat, mNewWhere;
     private TextView mSearchWhat;
@@ -67,6 +71,9 @@ public class TingleFragment extends Fragment {
         mSearchButton = (Button) v.findViewById(R.id.search_button);
         mSearchWhat = (TextView) v.findViewById(R.id.search_text_where);
 
+        // Barcode Scanner
+        mScanBarcodeButton = (Button) v.findViewById(R.id.scan_barcode_button);
+
         // view products click event
         mAddThingButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,6 +105,30 @@ public class TingleFragment extends Fragment {
                 }
             }
         });
+
+
+
+        try {
+            final Intent scanIntent = new Intent("com.google.zxing.client.android.SCAN");
+            mScanBarcodeButton.setOnClickListener(new View.OnClickListener() {
+
+                public void onClick(View v) {
+                    scanIntent.putExtra("SCAN_MODE", "QR_CODE_MODE");
+                    startActivityForResult(scanIntent, 0);
+                }
+
+            });
+
+            PackageManager packageManager = getActivity().getPackageManager();
+            if (packageManager.resolveActivity(scanIntent,
+                    PackageManager.MATCH_DEFAULT_ONLY) == null) {
+                mScanBarcodeButton.setEnabled(false);
+            }
+
+        } catch (ActivityNotFoundException anfe) {
+            Log.e("onCreate", "Scanner Not Found", anfe);
+        }
+
 
         mAllThingsButton = (Button) v.findViewById(R.id.activity_list_button);
         mAllThingsButton.setOnClickListener(new View.OnClickListener() {
